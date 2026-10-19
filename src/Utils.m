@@ -3,6 +3,26 @@
 @implementation SCIUtils
 
 + (BOOL)getBoolPref:(NSString *)key {
+    // Hardcoded on (toggles removed from settings)
+    static NSSet *lockedOn;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        lockedOn = [NSSet setWithArray:@[
+            @"hide_reels_tab",
+            @"hide_explore_grid",
+            @"hide_trending_searches",
+            @"disable_scrolling_reels",
+            @"no_suggested_users",
+            @"no_suggested_chats",
+            @"no_suggested_post",
+            @"no_suggested_account",
+            @"no_suggested_reels",
+            @"no_suggested_threads",
+            @"disable_feed_autoplay"
+        ]];
+    });
+    if ([lockedOn containsObject:key]) return true;
+
     if (![key length] || [[NSUserDefaults standardUserDefaults] objectForKey:key] == nil) return false;
 
     return [[NSUserDefaults standardUserDefaults] boolForKey:key];

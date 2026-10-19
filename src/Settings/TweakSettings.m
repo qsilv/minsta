@@ -18,12 +18,6 @@
         @{
             @"header": @"",
             @"rows": @[
-                [SCISetting linkCellWithTitle:@"Donate" subtitle:@"Consider donating to support this tweak's development!" icon:[SCISymbol symbolWithName:@"heart.circle.fill" color:[UIColor systemPinkColor] size:20.0] url:@"https://ko-fi.com/SoCuul"]
-            ]
-        },
-        @{
-            @"header": @"",
-            @"rows": @[
                 [SCISetting navigationCellWithTitle:@"General"
                                            subtitle:@""
                                                icon:[SCISymbol symbolWithName:@"gear"]
@@ -48,15 +42,6 @@
                                                 [SCISetting switchCellWithTitle:@"Enable note theming" subtitle:@"Enables the ability to use the notes theme picker" defaultsKey:@"enable_notes_customization"],
                                                 [SCISetting switchCellWithTitle:@"Custom note themes" subtitle:@"Provides an option to set custom emojis and background/text colors" defaultsKey:@"custom_note_themes"],
                                             ]
-                                        },
-                                        @{
-                                            @"header": @"Focus/distractions",
-                                            @"rows": @[
-                                                [SCISetting switchCellWithTitle:@"No suggested users" subtitle:@"Hides all suggested users for you to follow, outside your feed" defaultsKey:@"no_suggested_users"],
-                                                [SCISetting switchCellWithTitle:@"No suggested chats" subtitle:@"Hides the suggested broadcast channels in direct messages" defaultsKey:@"no_suggested_chats"],
-                                                [SCISetting switchCellWithTitle:@"Hide explore posts grid" subtitle:@"Hides the grid of suggested posts on the explore/search tab" defaultsKey:@"hide_explore_grid"],
-                                                [SCISetting switchCellWithTitle:@"Hide trending searches" subtitle:@"Hides the trending searches under the explore search bar" defaultsKey:@"hide_trending_searches"],
-                                            ]
                                         }]
                 ],
                 [SCISetting navigationCellWithTitle:@"Feed"
@@ -66,12 +51,7 @@
                                             @"header": @"",
                                             @"rows": @[
                                                 [SCISetting switchCellWithTitle:@"Hide stories tray" subtitle:@"Hides the story tray at the top and within your feed" defaultsKey:@"hide_stories_tray"],
-                                                [SCISetting switchCellWithTitle:@"Hide entire feed" subtitle:@"Removes all content from your home feed, including posts" defaultsKey:@"hide_entire_feed"],
-                                                [SCISetting switchCellWithTitle:@"No suggested posts" subtitle:@"Removes suggested posts from your feed" defaultsKey:@"no_suggested_post"],
-                                                [SCISetting switchCellWithTitle:@"No suggested for you" subtitle:@"Hides suggested accounts for you to follow" defaultsKey:@"no_suggested_account"],
-                                                [SCISetting switchCellWithTitle:@"No suggested reels" subtitle:@"Hides suggested reels to watch" defaultsKey:@"no_suggested_reels"],
-                                                [SCISetting switchCellWithTitle:@"No suggested threads posts" subtitle:@"Hides suggested threads posts" defaultsKey:@"no_suggested_threads"],
-                                                [SCISetting switchCellWithTitle:@"Disable video autoplay" subtitle:@"Prevents videos on your feed from playing automatically" defaultsKey:@"disable_feed_autoplay"]
+                                                [SCISetting switchCellWithTitle:@"Hide entire feed" subtitle:@"Removes all content from your home feed, including posts" defaultsKey:@"hide_entire_feed"]
                                             ]
                                         }]
                 ],
@@ -97,7 +77,6 @@
                                         @{
                                             @"header": @"Limits",
                                             @"rows": @[
-                                                [SCISetting switchCellWithTitle:@"Disable scrolling reels" subtitle:@"Prevents reels from being scrolled to the next video" defaultsKey:@"disable_scrolling_reels" requiresRestart:YES],
                                                 [SCISetting switchCellWithTitle:@"Prevent doom scrolling" subtitle:@"Limits the amount of reels available to scroll at any given time, and prevents refreshing" defaultsKey:@"prevent_doom_scrolling"],
                                                 [SCISetting stepperCellWithTitle:@"Doom scrolling limit" subtitle:@"Only loads %@ %@" defaultsKey:@"doom_scrolling_reel_count" min:1 max:100 step:1 label:@"reels" singularLabel:@"reel"]
                                             ]
@@ -160,7 +139,6 @@
                                             @"rows": @[
                                                 [SCISetting switchCellWithTitle:@"Hide feed tab" subtitle:@"Hides the feed/home tab on the bottom navigation bar" defaultsKey:@"hide_feed_tab" requiresRestart:YES],
                                                 [SCISetting switchCellWithTitle:@"Hide explore tab" subtitle:@"Hides the explore/search tab on the bottom navigation bar" defaultsKey:@"hide_explore_tab" requiresRestart:YES],
-                                                [SCISetting switchCellWithTitle:@"Hide reels tab" subtitle:@"Hides the reels tab on the bottom navigation bar" defaultsKey:@"hide_reels_tab" requiresRestart:YES],
                                                 [SCISetting switchCellWithTitle:@"Hide create tab" subtitle:@"Hides the create tab on the bottom navigation bar" defaultsKey:@"hide_create_tab" requiresRestart:YES]
                                             ]
                                         }]
@@ -222,10 +200,10 @@
                                             ]
                                         },
                                         @{
-                                            @"header": @"SCInsta",
+                                            @"header": @"Tweak",
                                             @"rows": @[
-                                                [SCISetting switchCellWithTitle:@"Enable tweak settings quick-access" subtitle:@"Allows you to hold on the home tab to open the SCInsta settings" defaultsKey:@"settings_shortcut" requiresRestart:YES],
-                                                [SCISetting switchCellWithTitle:@"Show tweak settings on app launch" subtitle:@"Automatically opens the SCInsta settings when the app launches" defaultsKey:@"tweak_settings_app_launch"],
+                                                [SCISetting switchCellWithTitle:@"Enable tweak settings quick-access" subtitle:@"Allows you to hold on the home tab to open the tweak settings" defaultsKey:@"settings_shortcut" requiresRestart:YES],
+                                                [SCISetting switchCellWithTitle:@"Show tweak settings on app launch" subtitle:@"Automatically opens the tweak settings when the app launches" defaultsKey:@"tweak_settings_app_launch"],
                                                 [SCISetting buttonCellWithTitle:@"Reset onboarding completion state"
                                                                            subtitle:@""
                                                                                icon:nil
@@ -247,7 +225,6 @@
                                                 [SCISetting switchCellWithTitle:@"Switch Cell (Restart)" subtitle:@"Tap the switch" defaultsKey:@"test_switch_cell_restart" requiresRestart:YES],
                                                 [SCISetting stepperCellWithTitle:@"Stepper cell" subtitle:@"I have %@%@" defaultsKey:@"test_stepper_cell" min:-10 max:1000 step:5.5 label:@"$" singularLabel:@"$"],
                                                 [SCISetting linkCellWithTitle:@"Link Cell" subtitle:@"Using icon" icon:[SCISymbol symbolWithName:@"link" color:[UIColor systemTealColor] size:20.0] url:@"https://google.com"],
-                                                [SCISetting linkCellWithTitle:@"Link Cell" subtitle:@"Using image" imageUrl:@"https://i.imgur.com/c9CbytZ.png" url:@"https://google.com"],
                                                 [SCISetting buttonCellWithTitle:@"Button Cell"
                                                                            subtitle:@""
                                                                                icon:[SCISymbol symbolWithName:@"oval.inset.filled"]
@@ -270,12 +247,9 @@
             ]
         },
         @{
-            @"header": @"Credits",
-            @"rows": @[
-                [SCISetting linkCellWithTitle:@"Developer" subtitle:@"SoCuul" imageUrl:@"https://i.imgur.com/c9CbytZ.png" url:@"https://socuul.dev"],
-                [SCISetting linkCellWithTitle:@"View Repo" subtitle:@"View the tweak's source code on GitHub" imageUrl:@"https://i.imgur.com/BBUNzeP.png" url:@"https://github.com/SoCuul/SCInsta"]
-            ],
-            @"footer": [NSString stringWithFormat:@"SCInsta %@\n\nInstagram v%@", SCIVersionString, [SCIUtils IGVersionString]]
+            @"header": @"",
+            @"rows": @[],
+            @"footer": [NSString stringWithFormat:@"%@\n\nInstagram v%@", SCIVersionString, [SCIUtils IGVersionString]]
         }
     ];
 }
@@ -288,7 +262,7 @@
 ///
 
 + (NSString *)title {
-    return @"SCInsta Settings";
+    return @"Tweak Settings";
 }
 
 
