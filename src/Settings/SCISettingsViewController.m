@@ -70,8 +70,9 @@ static char rowStaticRef[] = "row";
     [super viewWillDisappear:animated];
     
     if (![[[NSUserDefaults standardUserDefaults] objectForKey:@"SCInstaFirstRun"] isEqualToString:SCIVersionString]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Tweak Settings Info"
-                                                                       message:@"In the future: Hold down on the three lines at the top right of your profile page, to re-open the tweak settings."
+        NSString *name = [SCIUtils getExperimentalPref:@"remove_branding"] ? @"tweak" : @"SCInsta";
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ Settings Info", [SCIUtils getExperimentalPref:@"remove_branding"] ? @"Tweak" : @"SCInsta"]
+                                                                       message:[NSString stringWithFormat:@"In the future: Hold down on the three lines at the top right of your profile page, to re-open %@ settings.", name]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         
         [alert addAction:[UIAlertAction actionWithTitle:@"I understand!"
@@ -140,6 +141,12 @@ static char rowStaticRef[] = "row";
             UISwitch *toggle = [UISwitch new];
             toggle.on = [[NSUserDefaults standardUserDefaults] boolForKey:row.defaultsKey];
             toggle.onTintColor = [SCIUtils SCIColor_Primary];
+
+            if ([SCIUtils isPrefLocked:row.defaultsKey]) {
+                toggle.on = YES;
+                toggle.enabled = NO;
+                cellContentConfig.secondaryText = row.subtitle.length ? [@"🔒 Locked · " stringByAppendingString:row.subtitle] : @"🔒 Locked";
+            }
             
             objc_setAssociatedObject(toggle, rowStaticRef, row, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             
@@ -250,6 +257,41 @@ static char rowStaticRef[] = "row";
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+// Swipe left on a switch to lock it on permanently (experimental)
+- (UISwipeActionsConfiguration *)tableView:(UITableView *)tableView trailingSwipeActionsConfigurationForRowAtIndexPath:(NSIndexPath *)indexPath {
+    SCISetting *row = self.sections[indexPath.section][@"rows"][indexPath.row];
+    if (row.type != SCITableCellSwitch || [SCIUtils isPrefLocked:row.defaultsKey] || ![SCIUtils getBoolPref:@"experimental_features"]) return nil;
+
+    UIContextualAction *lockAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
+                                                                             title:@"Lock"
+                                                                           handler:^(UIContextualAction *action, UIView *sourceView, void (^completionHandler)(BOOL)) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Lock \"%@\"?", row.title]
+                                                                       message:@"This turns the setting on and it can never be turned off again, unless you reinstall."
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+
+        [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *a) {
+            completionHandler(NO);
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Lock permanently" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *a) {
+            [SCIUtils lockPref:row.defaultsKey];
+            completionHandler(YES);
+
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+            if (row.requiresRestart) {
+                [SCIUtils showRestartConfirmation];
+            }
+        }]];
+
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+    lockAction.image = [UIImage systemImageNamed:@"lock.fill"];
+
+    UISwipeActionsConfiguration *config = [UISwipeActionsConfiguration configurationWithActions:@[lockAction]];
+    config.performsFirstActionWithFullSwipe = NO;
+    return config;
 }
 
 // MARK: - Actions

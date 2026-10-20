@@ -23,6 +23,13 @@
 
 + (BOOL)getBoolPref:(NSString *)key;
 + (double)getDoublePref:(NSString *)key;
+
+// Locked prefs are permanently on
++ (BOOL)isPrefLocked:(NSString *)key;
++ (void)lockPref:(NSString *)key;
+
+// Personal features: only on when the experimental master switch is on too
++ (BOOL)getExperimentalPref:(NSString *)key;
 + (NSString *)getStringPref:(NSString *)key;
 
 + (_Bool)liquidGlassEnabledBool:(_Bool)fallback;

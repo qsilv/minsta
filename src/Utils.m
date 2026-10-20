@@ -3,25 +3,7 @@
 @implementation SCIUtils
 
 + (BOOL)getBoolPref:(NSString *)key {
-    // Hardcoded on (toggles removed from settings)
-    static NSSet *lockedOn;
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        lockedOn = [NSSet setWithArray:@[
-            @"hide_reels_tab",
-            @"hide_explore_grid",
-            @"hide_trending_searches",
-            @"disable_scrolling_reels",
-            @"no_suggested_users",
-            @"no_suggested_chats",
-            @"no_suggested_post",
-            @"no_suggested_account",
-            @"no_suggested_reels",
-            @"no_suggested_threads",
-            @"disable_feed_autoplay"
-        ]];
-    });
-    if ([lockedOn containsObject:key]) return true;
+    if ([self isPrefLocked:key]) return true;
 
     if (![key length] || [[NSUserDefaults standardUserDefaults] objectForKey:key] == nil) return false;
 
@@ -36,6 +18,21 @@
     if (![key length] || [[NSUserDefaults standardUserDefaults] objectForKey:key] == nil) return @"";
 
     return [[NSUserDefaults standardUserDefaults] stringForKey:key];
+}
+
++ (BOOL)isPrefLocked:(NSString *)key {
+    return [key length] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"locked_prefs"] containsObject:key];
+}
++ (void)lockPref:(NSString *)key {
+    if (![key length] || [self isPrefLocked:key]) return;
+
+    NSArray *locked = [[NSUserDefaults standardUserDefaults] arrayForKey:@"locked_prefs"] ?: @[];
+    [[NSUserDefaults standardUserDefaults] setObject:[locked arrayByAddingObject:key] forKey:@"locked_prefs"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:key];
+}
+
++ (BOOL)getExperimentalPref:(NSString *)key {
+    return [self getBoolPref:@"experimental_features"] && [self getBoolPref:key];
 }
 
 + (_Bool)liquidGlassEnabledBool:(_Bool)fallback {

@@ -4,7 +4,7 @@
 // Hide the reels tab on profiles of accounts that don't follow you back
 %hook _TtC14IGProfileSwift21IGProfileTabGenerator
 + (id)generateTabIdentifiersWithUser:(IGUser *)user userSession:(id)session isCurrentUser:(BOOL)isCurrentUser configuration:(id)configuration shouldShowReelsOnboardingTab:(BOOL)showReelsOnboarding hideClipsTab:(BOOL)hideClipsTab hasClipsDrafts:(BOOL)hasClipsDrafts {
-    if (!isCurrentUser && !user.followsCurrentUser) {
+    if ([SCIUtils getExperimentalPref:@"hide_nonmutual_reels"] && !isCurrentUser && !user.followsCurrentUser) {
         NSLog(@"[SCInsta] Hiding reels tab for non-mutual profile");
 
         hideClipsTab = YES;
@@ -18,6 +18,7 @@
 %hook IGProfileUserGridFeedViewController
 - (id)objectsForListAdapter:(id)arg1 {
     NSArray *originalObjs = %orig;
+    if (![SCIUtils getExperimentalPref:@"hide_nonmutual_reels"]) return originalObjs;
 
     IGUser *user = [self user];
     BOOL isCurrentUser = [user.username isEqualToString:[self userSession].user.username];

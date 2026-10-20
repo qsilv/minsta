@@ -265,6 +265,7 @@
 @interface IGSearchResultViewModel : NSObject
 - (id)title;
 - (NSUInteger)itemType;
+- (id)searchableItem;
 @end
 
 @interface IGDirectShareRecipient : NSObject
@@ -406,7 +407,9 @@
 
 @interface IGDSTabPageViewController : IGViewController
 @property (nonatomic, readonly) UIView *tabControl;
+- (id)currentViewController;
 - (void)setCurrentViewController:(id)controller;
+- (void)tabBarControlType:(id)tabControl tappedSegmentIndex:(unsigned long long)index;
 @end
 
 @interface IGSearchContainerSerpViewController : IGDSTabPageViewController
