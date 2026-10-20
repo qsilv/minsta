@@ -404,6 +404,19 @@
 - (void)refreshControlDidEndFinishLoadingAnimation:(id)arg1;
 @end
 
+@interface IGDSTabPageViewController : IGViewController
+@property (nonatomic, readonly) UIView *tabControl;
+- (void)setCurrentViewController:(id)controller;
+@end
+
+@interface IGSearchContainerSerpViewController : IGDSTabPageViewController
+@end
+
+@interface IGProfileUserGridFeedViewController : IGViewController
+- (IGUser *)user;
+- (IGUserSession *)userSession;
+@end
+
 @interface IGRefreshControl : UIControl
 @end
 
